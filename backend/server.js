@@ -76,7 +76,7 @@ app.use((req, res, next) => {
 	res.send("404");
 });
 
-const port = 9999;
+const port =process.env.PORT ||  9999;
 app.listen(port, (err) => {
 	if(err) console.log(err)
 	else console.log("Listen at port " + port);
