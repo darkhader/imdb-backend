@@ -5,7 +5,7 @@ const cors = require('cors');
 const session = require('express-session')
 
 
-mongoose.connect("mongodb://localhost/hackathon", { useNewUrlParser: true }, (err) => {
+mongoose.connect("mongodb://darkhader:Hoanghiep98@ds115874.mlab.com:15874/imdbmini", { useNewUrlParser: true }, (err) => {
     if (err) console.log(err)
     else console.log("Success")
 
