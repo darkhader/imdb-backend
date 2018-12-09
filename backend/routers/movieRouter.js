@@ -92,12 +92,12 @@ MovieRouter.put("/:id", async (req, res) => {
 
 
 
-// MovieRouter.delete("/:id", (req, res) => {
-// 	const movieId = req.params.id;
-// 	MovieRouter.remove({ _id: movieId  }, (err) => {
-// 		if(err) res.status(500).json({ success: 0, message: err})
-// 		else res.json({ success: 1 });
-// 	});
-// });
+MovieRouter.delete("/:id", (req, res) => {
+	const movieId = req.params.id;
+	MovieRouter.remove({ _id: movieId  }, (err) => {
+		if(err) res.status(500).json({ success: 0, message: err})
+		else res.json({ success: 1 });
+	});
+});
 
 module.exports = MovieRouter;

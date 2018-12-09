@@ -5,7 +5,10 @@ const cors = require('cors');
 const session = require('express-session')
 
 
-mongoose.connect("mongodb://darkhader:Hoanghiep98@ds115874.mlab.com:15874/imdbmini", { useNewUrlParser: true }, (err) => {
+mongoose.connect(
+	// "mongodb://localhost/hackathon"
+	"mongodb://darkhader:Hoanghiep98@ds115874.mlab.com:15874/imdbmini"
+, { useNewUrlParser: true }, (err) => {
     if (err) console.log(err)
     else console.log("Success")
 
@@ -18,7 +21,7 @@ const authRouter = require('./routers/authRouter');
 const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-app.use(express.static('./public'));
+app.use(express.static('public'));
 app.use(session({
 	secret:"keybroadhero",
 	resave:false,
@@ -29,7 +32,7 @@ app.use(session({
 		maxAge:7*24*60*60*1000
 	}
 }))
-app.use(cors({ origin: [ "https://imdb-frontend.herokuapp.com", "http://localhost:3000" ], credentials: true }));
+app.use(cors({ origin: [ "http://localhost:3000", "https://imdb-frontend.herokuapp.com" ], credentials: true }));
 // app.use((req, res, next) => {
 // 	res.setHeader("X-Frame-Options", "ALLOWALL");
 // 	res.setHeader(
@@ -76,7 +79,7 @@ app.use((req, res, next) => {
 	res.send("404");
 });
 
-const port =process.env.PORT ||  9999;
+const port = process.env.PORT || 9999;
 app.listen(port, (err) => {
 	if(err) console.log(err)
 	else console.log("Listen at port " + port);
