@@ -7,6 +7,7 @@ const UserSchema = new Schema({
 	hashPassword: { type: String, required: true },
 	avatar: { type: String },
 	intro: { type: String },
+	like: [{ type: Schema.Types.ObjectId, ref: "movie"}],
 	review: [{ type: Schema.Types.ObjectId, ref: "review"}]
 
 });

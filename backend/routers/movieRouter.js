@@ -23,10 +23,16 @@ MovieRouter.post("/", async (req, res) => {
 // })
 // "/api/users" => get all
 MovieRouter.get("/", async (req, res) => {
-	console.log("Get all user");
+	console.log("Get all movies");
+	var perPage = 4
+    var page = req.query.page || 1;
 	try {
-		const movies = await MovieModel.find({});
-		res.json({ success: 1, movies });
+		const movies = await MovieModel.find({})
+		.skip(perPage * (page - 1))
+		.limit(perPage)
+		.sort([['year', 1]]);
+		const total = await MovieModel.count({});
+		res.json({ success: 1, movies, total });
 	} catch (error) {
 		res.status(500).json({ success: 0, error: error })
 	}
@@ -39,6 +45,7 @@ MovieRouter.get("/:id", async (req, res) => {
 	try {
 		const movieFound = await MovieModel.findById(movieId)
 		.populate("actor", "name image")
+		.populate("User", "name")
 		.populate({
 			path: "review",
 			select: "content user",
@@ -60,22 +67,25 @@ MovieRouter.get("/:id", async (req, res) => {
 // Edit user
 MovieRouter.put("/:id", async (req, res) => {
 	const movieId = req.params.id;
-	const {  title, description, image, duration,year,review, actor } = req.body;
+	const {actor,like } = req.body;
 
 	try {
-		const movieFound = await MovieModel.findByIdAndUpdate(movieId, {$push: {actor: actor }})
-		if (!movieFound) {
-			res.status(404).json({ success: 0, message: "Not found!" });
-		} else {
-			for (key in {  title, description, image, duration,year,review }) {
-				if (movieFound[key] && req.body[key]) {movieFound[key] = req.body[key];}	
-			}
-
+		if(actor && !like){
+			const movieFound = await MovieModel.findByIdAndUpdate(movieId, {$push: {actor: actor }})
 			let movieUpdated = await movieFound.save();
 			res.json({ success: 1, user: movieUpdated });
 		}
+		if(!actor && like){
+			const movieFound = await MovieModel.findByIdAndUpdate(movieId, {$push: {like: like }})
+			let movieUpdated = await movieFound.save();
+			res.json({ success: 1, user: movieUpdated });
+		}
+		
+
+		
+		
 	} catch (error) {
-		res.status(500).json({ success: 0, message: error })
+		res.status(500).json({ success: 0, messageloi: error })
 	}
 });
 
