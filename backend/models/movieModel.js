@@ -7,6 +7,11 @@ const movieSchema = new Schema({
 	image: { type: String, },
 	duration: { type: String  },
 	year: {type: String},
+	luotlike: {type: Number},
+	date: {
+		type: Date,
+		default: Date.now
+	},
     like:[{type: Schema.Types.ObjectId, ref: "User"}],
     review: [{type: Schema.Types.ObjectId, ref: "review"}],
     actor: [{type: Schema.Types.ObjectId, ref: "actor"}]

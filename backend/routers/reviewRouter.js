@@ -3,6 +3,7 @@ const ReviewRouter = express.Router();
 const ReviewModel = require('../models/reviewModel');
 const MovieModel = require('../models/movieModel');
 const UserModel = require('../models/userModel')
+const ActorModel = require('../models/actorModel');
 ReviewRouter.get("/", async (req, res) => {
 	console.log();
 	
@@ -30,14 +31,22 @@ ReviewRouter.get("/:id", async (req, res) => {
 ReviewRouter.post("/", async (req, res) => {
 	
 
-	const { content , movie, user} = req.body;
-	console.log(content, movie)
+	const { content , movie, user,actor} = req.body;
+	console.log(content, actor)
 	
 	try {
-		const reviewCreated = await ReviewModel.create({content, movie, user });
-		await MovieModel.findByIdAndUpdate(movie, {$push: {review: reviewCreated._id }})
-		await UserModel.findByIdAndUpdate(user, {$set: {user: reviewCreated._id }})
-		res.status(201).json({ success: 1, review: reviewCreated, reviewId:reviewCreated._id  });
+		if(movie){
+			const reviewCreated = await ReviewModel.create({content, movie, user });
+			await MovieModel.findByIdAndUpdate(movie, {$push: {review: reviewCreated._id }})
+			await UserModel.findByIdAndUpdate(user, {$set: {user: reviewCreated._id }})
+			res.status(201).json({ success: 1, review: reviewCreated, reviewId:reviewCreated._id  });
+		}
+		if(actor){
+			const reviewCreated = await ReviewModel.create({content, actor, user });
+			await ActorModel.findByIdAndUpdate(actor, {$push: {review: reviewCreated._id }})
+			await UserModel.findByIdAndUpdate(user, {$set: {user: reviewCreated._id }})
+			res.status(201).json({ success: 1, review: reviewCreated, reviewId:reviewCreated._id  });
+		}
 	} catch (error) {
 		res.status(500).json({ success: 0, message: error })
 	}
