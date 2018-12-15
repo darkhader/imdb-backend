@@ -17,45 +17,45 @@ ActorRouter.get("/", async (req, res) => {
 	var perPage = 4
 	var page = req.query.page || 1;
 	var sort = req.query.sort || 1;
-	
-	
+
+
 	try {
-		
-		if(sort ==1){
+
+		if (sort == 1) {
 			const actors = await ActorModel.find({})
-		.skip(perPage * (page - 1))
-		.limit(perPage).sort([['name', 1]]);
-	
-		
-		const total = await ActorModel.count({});
-		res.json({ success: 1, actors, total });
+				.skip(perPage * (page - 1))
+				.limit(perPage).sort([['name', 1]]);
+
+
+			const total = await ActorModel.count({});
+			res.json({ success: 1, actors, total });
 		}
-		if(sort ==2){
+		if (sort == 2) {
 			const actors = await ActorModel.find({})
-		.skip(perPage * (page - 1))
-		.limit(perPage).sort([['dob', -1]]);
-	
-		
-		const total = await ActorModel.count({});
-		res.json({ success: 1, actors, total });
+				.skip(perPage * (page - 1))
+				.limit(perPage).sort([['dob', -1]]);
+
+
+			const total = await ActorModel.count({});
+			res.json({ success: 1, actors, total });
 		}
-		if(sort ==3){
+		if (sort == 3) {
 			const actors = await ActorModel.find({})
-		.skip(perPage * (page - 1))
-		.limit(perPage).sort([["luotlike", -1]]);
-	
-		
-		const total = await ActorModel.count({});
-		res.json({ success: 1, actors, total });
+				.skip(perPage * (page - 1))
+				.limit(perPage).sort([["luotlike", -1]]);
+
+
+			const total = await ActorModel.count({});
+			res.json({ success: 1, actors, total });
 		}
-		if(sort ==4){
+		if (sort == 4) {
 			const actors = await ActorModel.find({})
-		.skip(perPage * (page - 1))
-		.limit(perPage).sort({date:-1});
-	
-		
-		const total = await ActorModel.count({});
-		res.json({ success: 1, actors, total });
+				.skip(perPage * (page - 1))
+				.limit(perPage).sort({ date: -1 });
+
+
+			const total = await ActorModel.count({});
+			res.json({ success: 1, actors, total });
 		}
 	} catch (error) {
 		res.status(500).json({ success: 0, error: error })
@@ -68,16 +68,16 @@ ActorRouter.get("/:id", async (req, res) => {
 	let actorId = req.params.id;
 	try {
 		const actorFound = await ActorModel.findById(actorId)
-		.populate("User", "name")
-		.populate("movie", "name image")
-		.populate({
-			path: "review",
-			select: "content user",
-			populate: {
-				path: "user",
-				model: "User"
-			}
-		});
+			.populate("User", "name")
+			.populate("movie", "name image")
+			.populate({
+				path: "review",
+				select: "content user",
+				populate: {
+					path: "user",
+					model: "User"
+				}
+			});
 		if (!actorFound) res.status(404).json({ success: 0, message: "Not found!" })
 		else res.json({ success: 1, actor: actorFound });
 	} catch (error) {
@@ -89,22 +89,22 @@ ActorRouter.get("/:id", async (req, res) => {
 
 ActorRouter.use((req, res, next) => {
 	const { userFound } = req.session;
-	console.log("req1",req.session);
+	console.log("req1", req.session);
 	if (userFound && userFound.role >= 1) {
-		
-		
+
+
 		next();
-		
-		
-	} else res.status(401).json({ success: 0,message: userFound });
+
+
+	} else res.status(401).json({ success: 0, message: userFound });
 })
 // Create user
 ActorRouter.post("/", async (req, res) => {
-	
-	const { name, dob, image, nationality,review,movie } = req.body;
+
+	const { name, dob, image, nationality, review, movie } = req.body;
 	try {
-		const actorCreated = await ActorModel.create({  name, dob, image, nationality,review,movie });
-		res.status(201).json({ success: 1, actor: actorCreated, actorId:actorCreated._id  });
+		const actorCreated = await ActorModel.create({ name, dob, image, nationality, review, movie });
+		res.status(201).json({ success: 1, actor: actorCreated, actorId: actorCreated._id });
 	} catch (error) {
 		res.status(500).json({ success: 0, message: error })
 	}
@@ -114,28 +114,33 @@ ActorRouter.post("/", async (req, res) => {
 // Edit user
 ActorRouter.put("/:id", async (req, res) => {
 	const actorId = req.params.id;
-	
-	const {movie,like,luotlike,review } = req.body;
 
+	const { movie, like, luotlike, review } = req.body;
+	const actorFound1 = await ActorModel.findById(actorId);
 
 	try {
-		if(movie){
-			const actorFound = await ActorModel.findByIdAndUpdate(actorId, {$push: {movie: movie }})
+		if (movie) {
+			for (let i = 0; i < actorFound1.movie.length; i++) {
+
+				if (movie != actorFound1.movie[i]) {
+					const actorFound = await ActorModel.findByIdAndUpdate(actorId, { $push: { movie: movie } })
+					let actorUpDated = await actorFound.save();
+					res.json({ success: 1, actor: actorUpDated });
+				}
+			}
+		}
+		if (like) {
+			const actorFound = await ActorModel.findByIdAndUpdate(actorId, { $push: { like: like } })
 			let actorUpDated = await actorFound.save();
 			res.json({ success: 1, actor: actorUpDated });
 		}
-		if(like){
-			const actorFound = await ActorModel.findByIdAndUpdate(actorId, {$push: {like: like }})
+		if (luotlike) {
+			const actorFound = await ActorModel.findByIdAndUpdate(actorId, { luotlike })
 			let actorUpDated = await actorFound.save();
 			res.json({ success: 1, actor: actorUpDated });
 		}
-		if(luotlike){
-			const actorFound = await ActorModel.findByIdAndUpdate(actorId, {luotlike})
-			let actorUpDated = await actorFound.save();
-			res.json({ success: 1, actor: actorUpDated });
-		}
-		if(review){
-			const actorFound = await ActorModel.findByIdAndUpdate(actorId, {$push: {review: review }})
+		if (review) {
+			const actorFound = await ActorModel.findByIdAndUpdate(actorId, { $push: { review: review } })
 			let actorUpDated = await actorFound.save();
 			res.json({ success: 1, actor: actorUpDated });
 		}

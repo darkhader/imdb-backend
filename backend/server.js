@@ -6,8 +6,8 @@ const session = require('express-session')
 
 
 mongoose.connect(
-	"mongodb://localhost/hackathon"
-	// "mongodb://darkhader:Hoanghiep98@ds115874.mlab.com:15874/imdbmini"
+	// "mongodb://localhost/hackathon"
+	"mongodb://darkhader:Hoanghiep98@ds115874.mlab.com:15874/imdbmini"
 , { useNewUrlParser: true }, (err) => {
     if (err) console.log(err)
     else console.log("Success")
@@ -33,7 +33,7 @@ app.use(session({
 	}
 }))
 app.use(cors({ origin: [ "http://localhost:3000"
-// , "https://imdb-frontend.herokuapp.com" 
+, "https://imdb-frontend.herokuapp.com" 
 ], credentials: true }));
 // app.use((req, res, next) => {
 // 	res.setHeader("X-Frame-Options", "ALLOWALL");
