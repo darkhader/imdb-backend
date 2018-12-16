@@ -14,7 +14,7 @@ const ActorModel = require('../models/actorModel');
 // "/api/users" => get all
 ActorRouter.get("/", async (req, res) => {
 	console.log("Get all movies");
-	var perPage = 4
+	var perPage = 8
 	var page = req.query.page || 1;
 	var sort = req.query.sort || 1;
 
