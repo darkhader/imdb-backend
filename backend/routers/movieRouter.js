@@ -96,9 +96,9 @@ MovieRouter.use((req, res, next) => {
 
 MovieRouter.post("/", async (req, res) => {
 
-	const { title, description, image, duration, year, review, actor } = req.body;
+	const { title, description, image, duration, year, review, actor,luotlike } = req.body;
 	try {
-		const movieCreated = await MovieModel.create({ title, description, image, duration, year, review, actor });
+		const movieCreated = await MovieModel.create({ title, description, image, duration, year, review, actor,luotlike });
 		res.status(201).json({ success: 1, movie: movieCreated, movieId: movieCreated._id });
 	} catch (error) {
 		res.status(500).json({ success: 0, message: error })

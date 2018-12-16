@@ -7,7 +7,7 @@ const movieSchema = new Schema({
 	image: { type: String, },
 	duration: { type: String  },
 	year: {type: String},
-	luotlike: {type: Number},
+	luotlike: {type: Number, default:0},
 	date: {
 		type: Date,
 		default: Date.now
