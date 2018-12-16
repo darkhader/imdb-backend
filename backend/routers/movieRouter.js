@@ -111,6 +111,7 @@ MovieRouter.put("/:id", async (req, res) => {
 	const { actor, like, luotlike, review } = req.body;
 	const movieFound1 = await MovieModel.findById(movieId);
 	const m =0;
+	const n =0;
 	try {
 		if (actor) {
 			for (let i = 0; i < movieFound1.actor.length; i++) {
@@ -130,9 +131,21 @@ MovieRouter.put("/:id", async (req, res) => {
 			
 		}
 		if (like) {
-			const movieFound = await MovieModel.findByIdAndUpdate(movieId, { $push: { like: like } })
-			let movieUpdated = await movieFound.save();
-			res.json({ success: 1, user: movieUpdated });
+			for (let i = 0; i < movieFound1.like.length; i++) {
+			
+				if (like == movieFound1.like[i]) {
+					
+					n=1;
+					
+				}
+			
+			}
+			if(n==0){
+				const movieFound = await MovieModel.findByIdAndUpdate(movieId, { $push: { like: like } })
+				let movieUpdated = await movieFound.save();
+				res.json({ success: 1, user: movieUpdated });
+			}
+			
 		}
 		if (luotlike) {
 			const movieFound = await MovieModel.findByIdAndUpdate(movieId, { luotlike })
