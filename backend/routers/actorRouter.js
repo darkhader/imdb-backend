@@ -13,10 +13,14 @@ const ActorModel = require('../models/actorModel');
 // })
 // "/api/users" => get all
 ActorRouter.get("/", async (req, res) => {
-	console.log("Get all movies");
+	
 	var perPage = 8
 	var page = req.query.page || 1;
 	var sort = req.query.sort || 1;
+	if (!req.query.page &&  !req.query.sort ){
+		const actors = await ActorModel.find({})
+		res.json({ success: 1, actors });
+	}
 
 
 	try {
