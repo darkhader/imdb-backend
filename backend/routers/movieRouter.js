@@ -9,7 +9,7 @@ const ActorModel = require('../models/actorModel');
 
 MovieRouter.get("/", async (req, res) => {
 	console.log("Get all movies");
-	var perPage = 4
+	var perPage = 8
 	var page = req.query.page || 1;
 	var sort = req.query.sort || 1;
 
@@ -28,7 +28,7 @@ MovieRouter.get("/", async (req, res) => {
 		if (sort == 2) {
 			const movies = await MovieModel.find({})
 				.skip(perPage * (page - 1))
-				.limit(perPage).sort([['year', -1]]);
+				.limit(perPage).sort([['year', 1]]);
 
 
 			const total = await MovieModel.count({});
@@ -110,19 +110,24 @@ MovieRouter.put("/:id", async (req, res) => {
 	const movieId = req.params.id;
 	const { actor, like, luotlike, review } = req.body;
 	const movieFound1 = await MovieModel.findById(movieId);
+	const m =0;
 	try {
 		if (actor) {
 			for (let i = 0; i < movieFound1.actor.length; i++) {
 			
-				if (actor != movieFound1.actor[i]) {
+				if (actor == movieFound1.actor[i]) {
 					
+					m=1;
 					
-					const movieFound = await MovieModel.findByIdAndUpdate(movieId, { $push: { actor: actor } })
-					let movieUpdated = await movieFound.save();
-					res.json({ success: 1, user: movieUpdated });
 				}
 			
 			}
+			if(m==0){
+				const movieFound = await MovieModel.findByIdAndUpdate(movieId, { $push: { actor: actor } })
+				let movieUpdated = await movieFound.save();
+				res.json({ success: 1, user: movieUpdated });
+			}
+			
 		}
 		if (like) {
 			const movieFound = await MovieModel.findByIdAndUpdate(movieId, { $push: { like: like } })

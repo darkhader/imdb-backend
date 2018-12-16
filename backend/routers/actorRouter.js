@@ -116,18 +116,17 @@ ActorRouter.put("/:id", async (req, res) => {
 	const actorId = req.params.id;
 
 	const { movie, like, luotlike, review } = req.body;
-	const actorFound1 = await ActorModel.findById(actorId);
+	
 
 	try {
 		if (movie) {
-			for (let i = 0; i < actorFound1.movie.length; i++) {
+		
 
-				if (movie != actorFound1.movie[i]) {
+				
 					const actorFound = await ActorModel.findByIdAndUpdate(actorId, { $push: { movie: movie } })
 					let actorUpDated = await actorFound.save();
 					res.json({ success: 1, actor: actorUpDated });
-				}
-			}
+			
 		}
 		if (like) {
 			const actorFound = await ActorModel.findByIdAndUpdate(actorId, { $push: { like: like } })

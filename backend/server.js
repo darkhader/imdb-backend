@@ -35,35 +35,7 @@ app.use(session({
 app.use(cors({ origin: [ "http://localhost:3000"
 , "https://imdb-frontend.herokuapp.com" 
 ], credentials: true }));
-// app.use((req, res, next) => {
-// 	res.setHeader("X-Frame-Options", "ALLOWALL");
-// 	res.setHeader(
-// 	  "Access-Control-Allow-Methods",
-// 	  "POST, GET, PUT, DELETE, OPTIONS"
-// 	);
-  
-// 	if (req.headers.origin) {
-// 	  res.setHeader("Access-Control-Allow-Origin", req.headers.origin);
-// 	}
-  
-// 	res.setHeader("Access-Control-Allow-Credentials", true);
-  
-// 	res.setHeader(
-// 	  "Access-Control-Allow-Headers",
-// 	  "Authorization, Origin, X-Requested-With, Content-Type, Accept"
-// 	);
-// 	next();
-//   });
-// app.use(session({
-// 	secret:"keybroadhero",
-// 	resave:false,
-// 	saveUninitialized:true,
-// 	cookie:{
-// 		secure:false,
-// 		httpOnly:false,
-// 		maxAge:7*24*60*60*1000
-// 	}
-// }))
+
 
 app.get("/api", (req, res) => {
 
