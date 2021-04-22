@@ -32,7 +32,7 @@ app.use(session({
 		maxAge:7*24*60*60*1000
 	}
 }))
-app.use(cors({ origin: [ "http://localhost:8080"
+app.use(cors({ origin: [ "http://localhost:3000"
 , "https://imdb-frontend.herokuapp.com" 
 ], credentials: true }));
 
