@@ -17,15 +17,14 @@ ActorRouter.get("/", async (req, res) => {
 	var perPage = 8
 	var page = req.query.page || 1;
 	var sort = req.query.sort || 1;
-	if (!req.query.page &&  !req.query.sort ){
-		const actors = await ActorModel.find({})
-		res.json({ success: 1, actors });
-	}
+
 
 
 	try {
-
-		if (sort == 1) {
+		if (!req.query.page &&  !req.query.sort ){
+			const actors = await ActorModel.find({})
+			res.json({ success: 1, actors });
+		} else if (sort == 1) {
 			const actors = await ActorModel.find({})
 				.skip(perPage * (page - 1))
 				.limit(perPage).sort([['name', 1]]);
@@ -33,8 +32,7 @@ ActorRouter.get("/", async (req, res) => {
 
 			const total = await ActorModel.count({});
 			res.json({ success: 1, actors, total });
-		}
-		if (sort == 2) {
+		} else if (sort == 2) {
 			const actors = await ActorModel.find({})
 				.skip(perPage * (page - 1))
 				.limit(perPage).sort([['dob', -1]]);
@@ -42,8 +40,7 @@ ActorRouter.get("/", async (req, res) => {
 
 			const total = await ActorModel.count({});
 			res.json({ success: 1, actors, total });
-		}
-		if (sort == 3) {
+		} else if (sort == 3) {
 			const actors = await ActorModel.find({})
 				.skip(perPage * (page - 1))
 				.limit(perPage).sort([["luotlike", -1]]);
@@ -51,8 +48,7 @@ ActorRouter.get("/", async (req, res) => {
 
 			const total = await ActorModel.count({});
 			res.json({ success: 1, actors, total });
-		}
-		if (sort == 4) {
+		} else if (sort == 4) {
 			const actors = await ActorModel.find({})
 				.skip(perPage * (page - 1))
 				.limit(perPage).sort({ date: -1 });

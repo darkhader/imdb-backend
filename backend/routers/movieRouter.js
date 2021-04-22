@@ -21,11 +21,9 @@ MovieRouter.get("/", async (req, res) => {
 				.skip(perPage * (page - 1))
 				.limit(perPage).sort([['title', 1]]);
 
-
 			const total = await MovieModel.count({});
 			res.json({ success: 1, movies, total });
-		}
-		if (sort == 2) {
+		} else if (sort == 2) {
 			const movies = await MovieModel.find({})
 				.skip(perPage * (page - 1))
 				.limit(perPage).sort([['year', 1]]);
@@ -33,8 +31,7 @@ MovieRouter.get("/", async (req, res) => {
 
 			const total = await MovieModel.count({});
 			res.json({ success: 1, movies, total });
-		}
-		if (sort == 3) {
+		} else if (sort == 3) {
 			const movies = await MovieModel.find({})
 				.skip(perPage * (page - 1))
 				.limit(perPage).sort([["luotlike", -1]]);
@@ -42,8 +39,7 @@ MovieRouter.get("/", async (req, res) => {
 
 			const total = await MovieModel.count({});
 			res.json({ success: 1, movies, total });
-		}
-		if (sort == 4) {
+		} else if (sort == 4) {
 			const movies = await MovieModel.find({})
 				.skip(perPage * (page - 1))
 				.limit(perPage).sort({ date: -1 });

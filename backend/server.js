@@ -7,7 +7,7 @@ const session = require('express-session')
 
 mongoose.connect(
 	// "mongodb://localhost/hackathon"
-	"mongodb+srv://darkhader:Hoanghiep98@cluster0.pvju7.mongodb.net/imdb?retryWrites=true&w=majority"
+	"mongodb+srv://darkhader:Hoanghiep98@cluster0.fsbew.mongodb.net/imdb?retryWrites=true&w=majority"
 , { useNewUrlParser: true }, (err) => {
     if (err) console.log("err", err)
     else console.log("Success")

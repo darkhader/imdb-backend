@@ -2,12 +2,13 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const movieSchema = new Schema({
+	id: { type: String, required: true },
 	title: { type: String, required: true },
 	description: { type: String},
 	image: { type: String, },
 	duration: { type: String  },
 	year: {type: String},
-	luotlike: {type: Number, default:0},
+	luotlike: {type: String, default:0},
 	date: {
 		type: Date,
 		default: Date.now
