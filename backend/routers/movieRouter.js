@@ -12,40 +12,38 @@ MovieRouter.get("/", async (req, res) => {
 	var perPage = 8
 	var page = req.query.page || 1;
 	var sort = req.query.sort || 1;
-
-
 	try {
 
 		if (sort == 1) {
-			const movies = await MovieModel.find({})
+			const movies = await MovieModel.find({ "title" : { $ne : "" }})
 				.skip(perPage * (page - 1))
 				.limit(perPage).sort([['title', 1]]);
 
-			const total = await MovieModel.count({});
+			const total = await MovieModel.count({ "title" : { $ne : "" }});
 			res.json({ success: 1, movies, total });
 		} else if (sort == 2) {
-			const movies = await MovieModel.find({})
+			const movies = await MovieModel.find({ "title" : { $ne : "" }})
 				.skip(perPage * (page - 1))
 				.limit(perPage).sort([['year', 1]]);
 
 
-			const total = await MovieModel.count({});
+			const total = await MovieModel.count({ "title" : { $ne : "" }});
 			res.json({ success: 1, movies, total });
 		} else if (sort == 3) {
-			const movies = await MovieModel.find({})
+			const movies = await MovieModel.find({ "title" : { $ne : "" }})
 				.skip(perPage * (page - 1))
 				.limit(perPage).sort([["luotlike", -1]]);
 
 
-			const total = await MovieModel.count({});
+			const total = await MovieModel.count({ "title" : { $ne : "" }});
 			res.json({ success: 1, movies, total });
 		} else if (sort == 4) {
-			const movies = await MovieModel.find({})
+			const movies = await MovieModel.find({ "title" : { $ne : "" }})
 				.skip(perPage * (page - 1))
 				.limit(perPage).sort({ date: -1 });
 
 
-			const total = await MovieModel.count({});
+			const total = await MovieModel.count({ "title" : { $ne : "" }});
 			res.json({ success: 1, movies, total });
 		}
 	} catch (error) {
@@ -113,7 +111,7 @@ MovieRouter.put("/:id", async (req, res) => {
 	const n = 0;
 	try {
 		if (actor) {
-			if (movieFound1.actor) {
+			if (movieFound1.actor.length > 0) {
 				for (let i = 0; i < movieFound1.actor.length; i++) {
 					if (actor == movieFound1.actor[i]) {
 						m = 1;

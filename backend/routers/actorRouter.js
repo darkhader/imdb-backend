@@ -13,7 +13,7 @@ const ActorModel = require('../models/actorModel');
 // })
 // "/api/users" => get all
 ActorRouter.get("/", async (req, res) => {
-	
+
 	var perPage = 8
 	var page = req.query.page || 1;
 	var sort = req.query.sort || 1;
@@ -21,7 +21,7 @@ ActorRouter.get("/", async (req, res) => {
 
 
 	try {
-		if (!req.query.page &&  !req.query.sort ){
+		if (!req.query.page && !req.query.sort) {
 			const actors = await ActorModel.find({})
 			res.json({ success: 1, actors });
 		} else if (sort == 1) {
@@ -116,17 +116,13 @@ ActorRouter.put("/:id", async (req, res) => {
 	const actorId = req.params.id;
 
 	const { movie, like, luotlike, review } = req.body;
-	
+
 
 	try {
 		if (movie) {
-		
-
-				
-					const actorFound = await ActorModel.findByIdAndUpdate(actorId, { $push: { movie: movie } })
-					let actorUpDated = await actorFound.save();
-					res.json({ success: 1, actor: actorUpDated });
-			
+			const actorFound = await ActorModel.findByIdAndUpdate(actorId, { $push: { movie: movie } })
+			let actorUpDated = await actorFound.save();
+			res.json({ success: 1, actor: actorUpDated });
 		}
 		if (like) {
 			const actorFound = await ActorModel.findByIdAndUpdate(actorId, { $push: { like: like } })
